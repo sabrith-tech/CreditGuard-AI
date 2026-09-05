@@ -3,15 +3,16 @@
   "version": "1.0.0",
   "description": "Hadi's Creditcoin action endpoint for CreditGuard AI",
   "main": "server.js",
-  "type": "commonjs",
+  
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
   "dependencies": {
+    "@gluwa/usc-sdk": "^0.18.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "ethers": "^6.13.2",
+    "ethers": "^6.17.0",
     "express": "^4.19.2"
   }
 }
