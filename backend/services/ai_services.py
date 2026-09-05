@@ -1,7 +1,9 @@
 import os
 from google import genai
 from pydantic import BaseModel
+from dotenv import load_dotenv
 
+load_dotenv()
 class AIAnalysis(BaseModel):
     assessment: str
     risk: str
@@ -21,15 +23,19 @@ def analyze_evidence(evidence: dict) -> dict:
     Return your assessment using the required structured format.
     """
 
-    response = client.models.generate_content(
-        model="gemini-3.6-flash",
-        contents=prompt,
-        config={
-            "response_mime_type": "application/json",
-            "response_schema": AIAnalysis,
-        },
-    )
-
-    result = response.parsed
-
-    return result.model_dump()
+    try:
+        response = client.models.generate_content(
+            model="gemini-3.6-flash",
+            contents=prompt,
+            config={
+                "response_mime_type": "application/json",
+                "response_schema": AIAnalysis,
+            },
+        )
+        return response.parsed.model_dump()
+    except Exception as e:
+        return {
+            "assessment": "UNVERIFIED",
+            "risk": "HIGH",
+            "explanation": f"AI analysis unavailable ({type(e).__name__}). Evidence could not be automatically verified — manual review required."
+        }
