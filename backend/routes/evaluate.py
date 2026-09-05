@@ -20,8 +20,6 @@ def evaluate_request(data: EvaluationRequest):
             "recommended_action": "DO_NOT_RELEASE"
         }
 
-
-
     if evidence.amount < requested_amount:
         return {
             "decision": "BLOCK",
@@ -31,9 +29,23 @@ def evaluate_request(data: EvaluationRequest):
             "recommended_action": "DO_NOT_RELEASE"
         }
 
+    allowed_risk_levels = {"LOW", "MEDIUM", "HIGH"}
+    ai_risk = str(ai_result.get("risk", "")).upper()
+    if ai_risk not in allowed_risk_levels:
+        ai_risk = "MEDIUM"  # fallback if the AI returns something unexpected
+
+    if ai_result.get("assessment") != "VALID":
+        return {
+            "decision": "BLOCK",
+            "risk_level": ai_risk,
+            "policy_status": "FAIL",
+            "reason": ai_result["explanation"],
+            "recommended_action": "DO_NOT_RELEASE"
+        }
+
     return {
         "decision": "APPROVE",
-        "risk_level": "LOW",
+        "risk_level": ai_risk,
         "policy_status": "PASS",
         "reason": ai_result["explanation"],
         "recommended_action": "RELEASE"
