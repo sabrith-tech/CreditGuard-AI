@@ -1,4 +1,3 @@
-// server.js
 // This is the web server Thamannah's backend will send requests to.
 
 const express = require("express");
@@ -6,6 +5,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const { releaseCollateral, noAction } = require("./creditcoinService");
+const { evaluateWithVerification } = require("./evaluateWithVerification.cjs"); 
 
 const app = express();
 app.use(cors());
@@ -50,6 +50,31 @@ app.post("/creditcoin-action", async (req, res) => {
   });
 });
 
+/* POST /evaluate-with-verification
+ */
+app.post("/evaluate-with-verification", async (req, res) => {
+  const { wallet, requestedAmount, evidenceBase, sourceTxHash } = req.body;
+
+  if (!wallet || !requestedAmount || !evidenceBase || !sourceTxHash) {
+    return res.status(400).json({
+      error: "Missing required fields: wallet, requestedAmount, evidenceBase, sourceTxHash",
+    });
+  }
+
+  try {
+    const result = await evaluateWithVerification({
+      wallet,
+      requestedAmount,
+      evidenceBase,
+      sourceTxHash,
+      signerPrivateKey: process.env.PRIVATE_KEY,
+    });
+    return res.json(result);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+ 
 // Simple health check — lets you (or Thamannah) quickly confirm the server is alive.
 app.get("/health", (req, res) => {
   res.json({ status: "ok", service: "creditcoin-action-service" });
