@@ -1,0 +1,106 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap");
+@import "tailwindcss";
+
+:root {
+  /* Ledger theme — proof-driven forensic dossier */
+  --ink: #0a0e13;
+  --panel: #10161d;
+  --panel-raised: #151d26;
+  --line: #212b36;
+  --line-soft: #1a222c;
+
+  --text-primary: #e9eef3;
+  --text-muted: #8a97a8;
+  --text-faint: #57626f;
+
+  --verified: #2fd98a;
+  --verified-dim: #1a5c40;
+  --block: #ff5d4e;
+  --block-dim: #6b2620;
+  --pending: #f2b84b;
+  --pending-dim: #6b5220;
+  --chain: #6c8cff;
+  --chain-dim: #2a3566;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-panel: var(--panel);
+  --color-panel-raised: var(--panel-raised);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-text-primary: var(--text-primary);
+  --color-text-muted: var(--text-muted);
+  --color-text-faint: var(--text-faint);
+  --color-verified: var(--verified);
+  --color-verified-dim: var(--verified-dim);
+  --color-block: var(--block);
+  --color-block-dim: var(--block-dim);
+  --color-pending: var(--pending);
+  --color-pending-dim: var(--pending-dim);
+  --color-chain: var(--chain);
+  --color-chain-dim: var(--chain-dim);
+
+}
+
+body {
+  background: var(--ink);
+  color: var(--text-primary);
+  font-family: "Inter", system-ui, sans-serif;
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(108, 140, 255, 0.06), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(47, 217, 138, 0.05), transparent 40%);
+  background-attachment: fixed;
+}
+
+.font-display {
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.font-mono {
+  font-family: "IBM Plex Mono", monospace;
+}
+
+/* Hairline rule, used as a structural device throughout the dossier */
+.hr-line {
+  height: 1px;
+  background: var(--line);
+}
+
+/* Ledger stamp — the signature element. A circular seal used to mark
+   VERIFIED / BLOCKED / PENDING states across Evidence, Decision and Audit. */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid currentColor;
+  border-radius: 9999px;
+  transform: rotate(-4deg);
+  letter-spacing: 0.08em;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.4s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up {
+    animation: none;
+  }
+}
+
+::selection {
+  background: var(--chain-dim);
+  color: var(--text-primary);
+}
