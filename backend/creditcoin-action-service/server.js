@@ -1,4 +1,3 @@
-// server.js
 // This is the web server Thamannah's backend will send requests to.
 
 const express = require("express");
@@ -6,6 +5,7 @@ const cors = require("cors");
 require("dotenv").config();
 const { evaluateWithVerification } = require("./evaluateWithVerification.cjs");
 const { releaseCollateral, noAction } = require("./creditcoinService");
+const { evaluateWithVerification } = require("./evaluateWithVerification.cjs"); 
 
 const app = express();
 app.use(cors());
